@@ -4,12 +4,13 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+import engine.ConfigManager;
 import engine.GameEngine;
 
 public class GamePanel extends JPanel {
 
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 600;
+    int width = ConfigManager.getInt("window.width");
+    int height = ConfigManager.getInt("window.height");
 
     private GameEngine engine;
 
@@ -17,7 +18,7 @@ public class GamePanel extends JPanel {
 
         this.engine = engine;
 
-        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        setPreferredSize(new Dimension(width, height));
         setDoubleBuffered(true);
     }
 

@@ -2,6 +2,7 @@ package main;
 
 import javax.swing.JFrame;
 
+import engine.ConfigManager;
 import engine.GameEngine;
 import engine.GameLoop;
 import render.GamePanel;
@@ -9,6 +10,8 @@ import render.GamePanel;
 public class TinySwordGame {
 
     public static void main(String[] args) {
+
+        ConfigManager.load("config/game.properties");
 
         GameEngine engine = new GameEngine();
 

@@ -1,6 +1,6 @@
 package ecs;
 
-import components.ComponentManager;
+import ecs.ComponentManager;
 
 import java.awt.Graphics;
 

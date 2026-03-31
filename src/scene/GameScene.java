@@ -1,6 +1,7 @@
 package scene;
 
 import ecs.*;
+import ecs.SystemManager;
 import systems.*;
 
 import java.awt.Graphics;
