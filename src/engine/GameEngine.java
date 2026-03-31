@@ -1,54 +1,28 @@
 package engine;
 
-import components.ComponentManager;
-import ecs.*;
-import ecs.SystemManager;
-import systems.*;
+import scene.SceneManager;
+import scene.GameScene;
 
 import java.awt.Graphics;
 
 public class GameEngine {
 
-    private EntityManager entityManager;
-    private ComponentManager componentManager;
-    private SystemManager systemManager;
-
-    private RenderSystem renderSystem;
+    private SceneManager sceneManager;
 
     public GameEngine() {
 
-        entityManager = new EntityManager();
-        componentManager = new ComponentManager();
-        systemManager = new SystemManager();
+        sceneManager = new SceneManager();
 
-        initSystems();
-        initWorld();
-    }
-
-    private void initSystems() {
-
-        renderSystem = new RenderSystem(entityManager, componentManager);
-
-        systemManager.addRenderSystem(renderSystem);
-    }
-
-    private void initWorld() {
-
-        int player = entityManager.createEntity();
-
-        // 以后在这里添加组件
+        sceneManager.setScene(new GameScene());
     }
 
     public void update() {
 
-        systemManager.updateSystems();
+        sceneManager.update();
     }
 
     public void render(Graphics g) {
 
-        for(SystemBase system : systemManager.getRenderSystems()) {
-
-            system.render(g);
-        }
+        sceneManager.render(g);
     }
 }
