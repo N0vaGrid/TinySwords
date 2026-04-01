@@ -20,25 +20,32 @@ public class RenderSystem extends SystemBase {
         );
     }
 
-    @Override
     public void render(Graphics g) {
 
-        Set<Integer> entities = componentManager.getEntitiesWith(query);
+        Set<Integer> entities =
+                componentManager.getEntitiesWith(query);
 
-        for (int entity : entities) {
+        for(int entity : entities) {
 
-            TransformComponent t =
+            TransformComponent transform =
                     componentManager.getComponent(entity, TransformComponent.class);
 
-            SpriteComponent s =
+            SpriteComponent sprite =
                     componentManager.getComponent(entity, SpriteComponent.class);
 
             g.drawImage(
-                    s.sprite,
-                    (int)t.x,
-                    (int)t.y,
+                    sprite.texture,
+                    (int) transform.x,
+                    (int) transform.y,
+                    sprite.width,
+                    sprite.height,
                     null
             );
         }
+    }
+
+    @Override
+    public void update() {
+
     }
 }

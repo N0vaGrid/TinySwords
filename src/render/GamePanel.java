@@ -6,6 +6,7 @@ import java.awt.Graphics;
 
 import engine.ConfigManager;
 import engine.GameEngine;
+import input.KeyboardListener;
 
 public class GamePanel extends JPanel {
 
@@ -20,6 +21,9 @@ public class GamePanel extends JPanel {
 
         setPreferredSize(new Dimension(width, height));
         setDoubleBuffered(true);
+
+        addKeyListener(new KeyboardListener());
+        setFocusable(true);
     }
 
     @Override

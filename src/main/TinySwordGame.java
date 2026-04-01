@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import engine.ConfigManager;
 import engine.GameEngine;
 import engine.GameLoop;
+import input.KeyBindings;
 import render.GamePanel;
 
 public class TinySwordGame {
@@ -12,6 +13,10 @@ public class TinySwordGame {
     public static void main(String[] args) {
 
         ConfigManager.load("config/game.properties");
+
+        ConfigManager.load("config/controls.properties");
+
+        KeyBindings.load();
 
         GameEngine engine = new GameEngine();
 

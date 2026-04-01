@@ -1,5 +1,6 @@
 package scene;
 
+import components.*;
 import ecs.*;
 import ecs.SystemManager;
 import systems.*;
@@ -13,6 +14,8 @@ public class GameScene extends Scene {
     private SystemManager systemManager;
 
     private RenderSystem renderSystem;
+    private InputSystem inputSystem;
+    private MovementSystem movementSystem;
 
     @Override
     public void init() {
@@ -22,8 +25,13 @@ public class GameScene extends Scene {
         systemManager = new SystemManager();
 
         renderSystem = new RenderSystem(entityManager, componentManager);
-
         systemManager.addRenderSystem(renderSystem);
+
+        inputSystem = new InputSystem(entityManager, componentManager);
+        systemManager.addUpdateSystem(inputSystem);
+        movementSystem = new MovementSystem(entityManager, componentManager);
+        systemManager.addUpdateSystem(movementSystem);
+
 
         initWorld();
     }
@@ -33,6 +41,12 @@ public class GameScene extends Scene {
         int player = entityManager.createEntity();
 
         // 后面会加组件
+        componentManager.addComponent(player, new TransformComponent(100, 100));
+        componentManager.addComponent(player, new InputComponent());
+        componentManager.addComponent(player, new VelocityComponent());
+        componentManager.addComponent(player, new SpriteComponent(
+                graphics.TextureManager.getTexture("textures/images/Warrior_Idle_01.png")
+        ));
     }
 
     @Override

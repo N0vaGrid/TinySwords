@@ -5,14 +5,16 @@ import java.awt.image.BufferedImage;
 
 public class SpriteComponent implements Component {
 
-    public BufferedImage sprite;
+    public BufferedImage texture;
+
     public int width;
     public int height;
 
-    public SpriteComponent(BufferedImage sprite, int width, int height) {
+    public SpriteComponent(BufferedImage texture) {
 
-        this.sprite = sprite;
-        this.width = width;
-        this.height = height;
+        this.texture = texture;
+
+        this.width = texture.getWidth();
+        this.height = texture.getHeight();
     }
 }
