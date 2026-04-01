@@ -1,4 +1,4 @@
-package components;
+package systems;
 
 import ecs.*;
 import components.*;
@@ -52,6 +52,8 @@ public class MovementSystem extends SystemBase {
 
             transform.x += velocity.vx;
             transform.y += velocity.vy;
+
+            //System.out.println(transform.x + "," + transform.y);
         }
     }
 }

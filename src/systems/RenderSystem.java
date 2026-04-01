@@ -1,7 +1,10 @@
 package systems;
 
+import core.GameConstants;
 import ecs.*;
 import components.*;
+import graphics.Camera;
+import graphics.CameraManager;
 
 import java.awt.Graphics;
 import java.util.Set;
@@ -22,6 +25,8 @@ public class RenderSystem extends SystemBase {
 
     public void render(Graphics g) {
 
+        int renderSize = GameConstants.RENDER_TILE_SIZE;
+
         Set<Integer> entities =
                 componentManager.getEntitiesWith(query);
 
@@ -33,12 +38,17 @@ public class RenderSystem extends SystemBase {
             SpriteComponent sprite =
                     componentManager.getComponent(entity, SpriteComponent.class);
 
+            Camera camera = CameraManager.getCamera();
+
+            int screenX = (int)((transform.x - camera.x) * GameConstants.SCALE);
+            int screenY = (int)((transform.y - camera.y) * GameConstants.SCALE);
+
             g.drawImage(
                     sprite.texture,
-                    (int) transform.x,
-                    (int) transform.y,
-                    sprite.width,
-                    sprite.height,
+                    (int) screenX,
+                    (int) screenY,
+                    sprite.width*GameConstants.SCALE,
+                    sprite.height*GameConstants.SCALE,
                     null
             );
         }

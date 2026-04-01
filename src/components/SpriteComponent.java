@@ -10,11 +10,11 @@ public class SpriteComponent implements Component {
     public int width;
     public int height;
 
-    public SpriteComponent(BufferedImage texture) {
+    public SpriteComponent(BufferedImage texture , int width , int height) {
 
         this.texture = texture;
 
-        this.width = texture.getWidth();
-        this.height = texture.getHeight();
+        this.width = width;
+        this.height = height;
     }
 }
