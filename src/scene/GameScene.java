@@ -5,6 +5,7 @@ import core.GameConstants;
 import ecs.*;
 import ecs.SystemManager;
 import engine.ConfigManager;
+import graphics.Camera;
 import graphics.CameraManager;
 import graphics.TextureManager;
 import systems.*;
@@ -25,6 +26,7 @@ public class GameScene extends Scene {
     private MovementSystem movementSystem;
     private CameraSystem cameraSystem;
     private TileMapRenderSystem tileSystem;
+    private CameraFollowSystem cameraFollowSystem;
 
     @Override
     public void init() {
@@ -40,13 +42,14 @@ public class GameScene extends Scene {
 
         renderSystem = new RenderSystem(entityManager, componentManager);
         systemManager.addRenderSystem(renderSystem);
-
         inputSystem = new InputSystem(entityManager, componentManager);
         systemManager.addUpdateSystem(inputSystem);
         movementSystem = new MovementSystem(entityManager, componentManager);
         systemManager.addUpdateSystem(movementSystem);
         cameraSystem = new CameraSystem(entityManager, componentManager);
         systemManager.addUpdateSystem(cameraSystem);
+        cameraFollowSystem = new CameraFollowSystem(entityManager , componentManager);
+        systemManager.addUpdateSystem(cameraFollowSystem);
 
         var tilesetTexture =
                 TextureManager.getTexture("textures/tiles/tileset.png");
@@ -74,6 +77,13 @@ public class GameScene extends Scene {
     private void initWorld() {
 
         int player = entityManager.createEntity();
+
+        Camera camera = CameraManager.getCamera();
+
+        camera.setWorldSize(
+                30 * GameConstants.RENDER_TILE_SIZE,
+                20 * GameConstants.RENDER_TILE_SIZE
+        );
 
         // 后面会加组件
         componentManager.addComponent(player, new PlayerComponent());
