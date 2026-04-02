@@ -5,6 +5,7 @@ import ecs.*;
 import components.*;
 import graphics.Camera;
 import graphics.CameraManager;
+import tilemap.Tile;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -28,34 +29,35 @@ public class TileMapRenderSystem extends SystemBase {
         Set<Integer> entities =
                 componentManager.getEntitiesWith(query);
 
-        for(int entity : entities) {
+        for (int entity : entities) {
 
             TileMapComponent mapComp =
                     componentManager.getComponent(entity, TileMapComponent.class);
 
             var map = mapComp.map;
 
-            // 只渲染可见区域
+            // 可见区域计算
             int startCol = (int)(camera.x / tileSize);
             int endCol = (int)((camera.x + camera.viewportWidth) / tileSize) + 1;
 
             int startRow = (int)(camera.y / tileSize);
             int endRow = (int)((camera.y + camera.viewportHeight) / tileSize) + 1;
 
-            for(int y = startRow; y < endRow; y++) {
+            for (int y = startRow; y < endRow; y++) {
 
-                if(y < 0 || y >= map.height) continue;
+                if (y < 0 || y >= map.height) continue;
 
-                for(int x = startCol; x < endCol; x++) {
+                for (int x = startCol; x < endCol; x++) {
 
-                    if(x < 0 || x >= map.width) continue;
+                    if (x < 0 || x >= map.width) continue;
 
-                    int tile = map.tiles[y][x];
+                    int tileId = map.tiles[y][x];
 
-                    BufferedImage tileImage =
-                            map.tileSet.getTile(tile);
+                    Tile tile = map.tileSet.getTile(tileId);
 
-                    if(tileImage == null) continue;
+                    if (tile == null) continue;
+
+                    BufferedImage tileImage = tile.texture;
 
                     int worldX = x * tileSize;
                     int worldY = y * tileSize;
@@ -78,6 +80,6 @@ public class TileMapRenderSystem extends SystemBase {
 
     @Override
     public void update() {
-
+        // TileMap 目前不需要 update
     }
 }

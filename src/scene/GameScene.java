@@ -11,9 +11,10 @@ import graphics.TextureManager;
 import systems.*;
 import tilemap.TileMap;
 import tilemap.TileMapLoader;
-import tilemap.TileSet;
+import tilemap.*;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 public class GameScene extends Scene {
 
@@ -51,10 +52,16 @@ public class GameScene extends Scene {
         cameraFollowSystem = new CameraFollowSystem(entityManager , componentManager);
         systemManager.addUpdateSystem(cameraFollowSystem);
 
-        var tilesetTexture =
-                TextureManager.getTexture("textures/tiles/tileset.png");
+        TileSet tileSet = new TileSet(10);
+        BufferedImage grass = TextureManager.getTexture("textures/tiles/grass.png");
 
-        TileSet tileSet = new TileSet(tilesetTexture, GameConstants.TILE_SIZE);
+       // BufferedImage wall = TextureManager.getTexture("textures/tiles/wall.png");
+
+       // BufferedImage water = TextureManager.getTexture("textures/tiles/water.png");
+
+        tileSet.setTile(0, new Tile(grass, false, TileType.GRASS));
+        //tileSet.setTile(1, new Tile(wall, true, TileType.WALL));
+        //tileSet.setTile(2, new Tile(water, true, TileType.WATER));
 
         TileMap map =
                 TileMapLoader.load("maps/world.txt", tileSet);
