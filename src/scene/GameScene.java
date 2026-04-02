@@ -13,7 +13,7 @@ import tilemap.TileMap;
 import tilemap.TileMapLoader;
 import tilemap.*;
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class GameScene extends Scene {
@@ -28,6 +28,8 @@ public class GameScene extends Scene {
     private CameraSystem cameraSystem;
     private TileMapRenderSystem tileSystem;
     private CameraFollowSystem cameraFollowSystem;
+    private TileCollisionSystem tileCollisionSystem;
+    private DebugRenderSystem debugRenderSystem;
 
     @Override
     public void init() {
@@ -47,21 +49,25 @@ public class GameScene extends Scene {
         systemManager.addUpdateSystem(inputSystem);
         movementSystem = new MovementSystem(entityManager, componentManager);
         systemManager.addUpdateSystem(movementSystem);
+        tileCollisionSystem = new TileCollisionSystem(entityManager, componentManager);
+        systemManager.addUpdateSystem(tileCollisionSystem);
         cameraSystem = new CameraSystem(entityManager, componentManager);
         systemManager.addUpdateSystem(cameraSystem);
         cameraFollowSystem = new CameraFollowSystem(entityManager , componentManager);
         systemManager.addUpdateSystem(cameraFollowSystem);
+        debugRenderSystem = new DebugRenderSystem(entityManager, componentManager);
+        systemManager.addRenderSystem(debugRenderSystem);
 
         TileSet tileSet = new TileSet(10);
         BufferedImage grass = TextureManager.getTexture("textures/tiles/grass.png");
 
        // BufferedImage wall = TextureManager.getTexture("textures/tiles/wall.png");
 
-       // BufferedImage water = TextureManager.getTexture("textures/tiles/water.png");
+       BufferedImage water = TextureManager.getTexture("textures/tiles/water.png");
 
         tileSet.setTile(0, new Tile(grass, false, TileType.GRASS));
         //tileSet.setTile(1, new Tile(wall, true, TileType.WALL));
-        //tileSet.setTile(2, new Tile(water, true, TileType.WATER));
+        tileSet.setTile(2, new Tile(water, true, TileType.WATER));
 
         TileMap map =
                 TileMapLoader.load("maps/world.txt", tileSet);
@@ -100,6 +106,10 @@ public class GameScene extends Scene {
         componentManager.addComponent(player, new SpriteComponent(
                 graphics.TextureManager.getTexture("textures/images/Warrior_Idle_01.png"),192 ,192
         ));
+        componentManager.addComponent(
+                player,
+                new CollisionComponent(48,48)
+        );
     }
 
     @Override
@@ -114,6 +124,10 @@ public class GameScene extends Scene {
         tileSystem.render(g);
 
         renderSystem.render(g);
+
+        if (g instanceof Graphics2D) {
+            debugRenderSystem.render((Graphics2D) g);
+        }
     }
 
     @Override
