@@ -60,11 +60,17 @@ public class TileCollisionSystem extends SystemBase {
             double oldX = transform.x - velocity.vx;
             double oldY = transform.y - velocity.vy;
 
-            int leftTile = (int)(transform.x / tileSize);
-            int rightTile = (int)((transform.x + collision.width) / tileSize);
+            /*
+             * 计算真正的碰撞箱位置
+             */
+            double hitboxX = transform.x + collision.offsetX;
+            double hitboxY = transform.y + collision.offsetY;
 
-            int topTile = (int)(transform.y / tileSize);
-            int bottomTile = (int)((transform.y + collision.height) / tileSize);
+            int leftTile = (int)(hitboxX / tileSize);
+            int rightTile = (int)((hitboxX + collision.width) / tileSize);
+
+            int topTile = (int)(hitboxY / tileSize);
+            int bottomTile = (int)((hitboxY + collision.height) / tileSize);
 
             boolean blocked = false;
 

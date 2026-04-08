@@ -1,10 +1,14 @@
 package systems;
 
+import core.GameConstants;
 import ecs.*;
 import components.*;
+import graphics.Camera;
+import graphics.CameraManager;
 
 import java.awt.*;
 import java.util.Set;
+
 
 public class DebugRenderSystem extends SystemBase {
 
@@ -23,6 +27,8 @@ public class DebugRenderSystem extends SystemBase {
 
         Set<Integer> entities = componentManager.getEntitiesWith(query);
 
+        Camera camera = CameraManager.getCamera();
+
         g2.setColor(Color.RED);
         g2.setStroke(new BasicStroke(2));
 
@@ -34,8 +40,8 @@ public class DebugRenderSystem extends SystemBase {
             CollisionComponent collision =
                     componentManager.getComponent(entity, CollisionComponent.class);
 
-            int x = (int) transform.x;
-            int y = (int) transform.y;
+            int x = (int)(transform.x + collision.offsetX);
+            int y = (int)(transform.y + collision.offsetY);
 
             g2.drawRect(
                     x,

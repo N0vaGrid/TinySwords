@@ -108,7 +108,7 @@ public class GameScene extends Scene {
         ));
         componentManager.addComponent(
                 player,
-                new CollisionComponent(48,48)
+                new CollisionComponent(48,48 ,72 ,72)
         );
     }
 
