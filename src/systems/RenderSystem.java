@@ -43,14 +43,33 @@ public class RenderSystem extends SystemBase {
             int screenX = (int)((transform.x - camera.x) * GameConstants.SCALE);
             int screenY = (int)((transform.y - camera.y) * GameConstants.SCALE);
 
-            g.drawImage(
-                    sprite.texture,
-                    (int) screenX,
-                    (int) screenY,
-                    sprite.width*GameConstants.SCALE,
-                    sprite.height*GameConstants.SCALE,
-                    null
-            );
+            int width = sprite.width * GameConstants.SCALE;
+            int height = sprite.height * GameConstants.SCALE;
+
+            if(sprite.flipX){
+
+                g.drawImage(
+                        sprite.texture,
+                        screenX + width,
+                        screenY,
+                        -width,
+                        height,
+                        null
+                );
+
+            }else{
+
+                g.drawImage(
+                        sprite.texture,
+                        screenX,
+                        screenY,
+                        width,
+                        height,
+                        null
+                );
+
+            }
+
         }
     }
 

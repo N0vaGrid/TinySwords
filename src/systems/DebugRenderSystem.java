@@ -40,15 +40,17 @@ public class DebugRenderSystem extends SystemBase {
             CollisionComponent collision =
                     componentManager.getComponent(entity, CollisionComponent.class);
 
-            int x = (int)(transform.x + collision.offsetX);
-            int y = (int)(transform.y + collision.offsetY);
+            int screenX = (int)((transform.x + collision.offsetX - camera.x) * GameConstants.SCALE);
+            int screenY = (int)((transform.y + collision.offsetY - camera.y) * GameConstants.SCALE);
+            int screenWidth = (int)(collision.width * GameConstants.SCALE);
+            int screenHeight = (int)(collision.height * GameConstants.SCALE);
 
-            g2.drawRect(
-                    x,
-                    y,
-                    collision.width,
-                    collision.height
-            );
+/*            g2.drawRect(
+                    screenX,
+                    screenY,
+                    screenWidth,
+                    screenHeight
+            );*/
         }
     }
 }

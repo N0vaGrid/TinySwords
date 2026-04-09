@@ -26,6 +26,8 @@ public class KeyBindings {
 
         bindings.put("attack",
                 getKey(ConfigManager.get("attack")));
+
+        bindings.put("debug.toggle",KeyEvent.VK_F1);
     }
 
     private static int getKey(String key) {

@@ -30,6 +30,8 @@ public class GameScene extends Scene {
     private CameraFollowSystem cameraFollowSystem;
     private TileCollisionSystem tileCollisionSystem;
     private DebugRenderSystem debugRenderSystem;
+    private AnimationSystem animationsystem;
+    private AttackSystem attackSystem;
 
     @Override
     public void init() {
@@ -49,6 +51,10 @@ public class GameScene extends Scene {
         systemManager.addUpdateSystem(inputSystem);
         movementSystem = new MovementSystem(entityManager, componentManager);
         systemManager.addUpdateSystem(movementSystem);
+        attackSystem = new AttackSystem(entityManager, componentManager);
+        systemManager.addUpdateSystem(attackSystem);
+        animationsystem = new AnimationSystem(entityManager, componentManager);
+        systemManager.addUpdateSystem(animationsystem);
         tileCollisionSystem = new TileCollisionSystem(entityManager, componentManager);
         systemManager.addUpdateSystem(tileCollisionSystem);
         cameraSystem = new CameraSystem(entityManager, componentManager);
@@ -104,12 +110,51 @@ public class GameScene extends Scene {
         componentManager.addComponent(player, new InputComponent());
         componentManager.addComponent(player, new VelocityComponent());
         componentManager.addComponent(player, new SpriteComponent(
-                graphics.TextureManager.getTexture("textures/images/Warrior_Idle_01.png"),192 ,192
+                graphics.TextureManager.getTexture("textures/player/idle/Warrior_Idle_01.png"),192 ,192
         ));
         componentManager.addComponent(
                 player,
                 new CollisionComponent(48,48 ,72 ,72)
         );
+        componentManager.addComponent(player, new AttackComponent());
+
+        AnimatorComponent animator = new AnimatorComponent();
+        BufferedImage[] idle = new BufferedImage[]{
+                TextureManager.getTexture("textures/player/idle/Warrior_Idle_01.png"),
+                TextureManager.getTexture("textures/player/idle/Warrior_Idle_02.png"),
+                TextureManager.getTexture("textures/player/idle/Warrior_Idle_03.png"),
+                TextureManager.getTexture("textures/player/idle/Warrior_Idle_04.png"),
+                TextureManager.getTexture("textures/player/idle/Warrior_Idle_05.png"),
+                TextureManager.getTexture("textures/player/idle/Warrior_Idle_06.png"),
+                TextureManager.getTexture("textures/player/idle/Warrior_Idle_07.png"),
+                TextureManager.getTexture("textures/player/idle/Warrior_Idle_08.png"),
+        };
+        BufferedImage[] run = new BufferedImage[]{
+                TextureManager.getTexture("textures/player/run/Warrior_Run_01.png"),
+                TextureManager.getTexture("textures/player/run/Warrior_Run_02.png"),
+                TextureManager.getTexture("textures/player/run/Warrior_Run_03.png"),
+                TextureManager.getTexture("textures/player/run/Warrior_Run_04.png"),
+                TextureManager.getTexture("textures/player/run/Warrior_Run_05.png")
+        };
+        BufferedImage[] attack = new BufferedImage[]{
+                TextureManager.getTexture("textures/player/attack/Warrior_Attack_01.png"),
+                TextureManager.getTexture("textures/player/attack/Warrior_Attack_02.png"),
+                TextureManager.getTexture("textures/player/attack/Warrior_Attack_03.png"),
+                TextureManager.getTexture("textures/player/attack/Warrior_Attack_04.png"),
+        };
+
+        AnimationComponent idleAnim = new AnimationComponent(idle,8);
+        AnimationComponent runAnim = new AnimationComponent(run,8);
+        AnimationComponent attackAnim = new AnimationComponent(attack,8 , false,  true);
+
+        animator.animations.put("idle", idleAnim);
+        animator.animations.put("run",runAnim);
+        animator.animations.put("attack",attackAnim);
+
+
+        animator.play("idle");
+
+        componentManager.addComponent(player, animator);
     }
 
     @Override

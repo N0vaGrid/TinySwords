@@ -20,6 +20,7 @@ public class MovementSystem extends SystemBase {
                 TransformComponent.class,
                 VelocityComponent.class,
                 InputComponent.class
+                //AnimationComponent.class
         );
 
         speed = ConfigManager.getDouble("player.speed");
@@ -42,18 +43,26 @@ public class MovementSystem extends SystemBase {
             InputComponent input =
                     componentManager.getComponent(entity, InputComponent.class);
 
+            AnimatorComponent animator =
+                    componentManager.getComponent(entity, AnimatorComponent.class);
+
+            PlayerComponent player =
+                    componentManager.getComponent(entity, PlayerComponent.class);
+
+            SpriteComponent sprite =
+                    componentManager.getComponent(entity, SpriteComponent.class);
+
             velocity.vx = 0;
             velocity.vy = 0;
 
             if(input.up) velocity.vy -= speed;
             if(input.down) velocity.vy += speed;
-            if(input.left) velocity.vx -= speed;
-            if(input.right) velocity.vx += speed;
+            if(input.left) {velocity.vx -= speed; sprite.flipX = true;}
+            if(input.right) {velocity.vx += speed; sprite.flipX = false;}
 
             transform.x += velocity.vx;
             transform.y += velocity.vy;
 
-            //System.out.println(transform.x + "," + transform.y);
         }
     }
 }

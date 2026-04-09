@@ -27,6 +27,8 @@ public class InputSystem extends SystemBase {
 
             InputComponent input =
                     componentManager.getComponent(entity, InputComponent.class);
+            PlayerComponent player =
+                    componentManager.getComponent(entity, PlayerComponent.class);
 
             input.up =
                 InputManager.isKeyDown(KeyBindings.get("move.up"));
@@ -42,6 +44,7 @@ public class InputSystem extends SystemBase {
 
             input.attack =
                 InputManager.isKeyDown(KeyBindings.get("attack"));
+
         }
     }
 }

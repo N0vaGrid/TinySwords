@@ -7,6 +7,8 @@ public class SpriteComponent implements Component {
 
     public BufferedImage texture;
 
+    public boolean flipX = false;
+
     public int width;
     public int height;
 
