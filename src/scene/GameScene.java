@@ -117,6 +117,7 @@ public class GameScene extends Scene {
                 new CollisionComponent(48,48 ,72 ,72)
         );
         componentManager.addComponent(player, new AttackComponent());
+        componentManager.addComponent(player, new StateComponent());
 
         AnimatorComponent animator = new AnimatorComponent();
         BufferedImage[] idle = new BufferedImage[]{
@@ -145,7 +146,7 @@ public class GameScene extends Scene {
 
         AnimationComponent idleAnim = new AnimationComponent(idle,8);
         AnimationComponent runAnim = new AnimationComponent(run,8);
-        AnimationComponent attackAnim = new AnimationComponent(attack,8 , false,  true);
+        AnimationComponent attackAnim = new AnimationComponent(attack,12 , false,  true);
 
         animator.animations.put("idle", idleAnim);
         animator.animations.put("run",runAnim);

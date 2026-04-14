@@ -1,8 +1,6 @@
 package systems;
 
-import components.AttackComponent;
-import components.AnimatorComponent;
-import components.InputComponent;
+import components.*;
 import ecs.ComponentManager;
 import ecs.EntityManager;
 import ecs.Query;
@@ -41,6 +39,8 @@ public class AttackSystem extends SystemBase {
             AnimatorComponent animator =
                     componentManager.getComponent(entity, AnimatorComponent.class);
 
+            AnimationComponent anim = animator.getCurrentAnimation();
+
             // 冷却计时
             if (attack.cooldown > 0)
                 attack.cooldown--;
@@ -48,12 +48,26 @@ public class AttackSystem extends SystemBase {
             // 攻击输入
             if (input.attack && attack.cooldown == 0) {
 
-                attack.cooldown = attack.maxCooldown;
-
                 attack.attacking = true;
 
-                animator.play("attack");
+                StateComponent state =
+                        componentManager.getComponent(entity, StateComponent.class);
 
+                state.state = StateComponent.State.ATTACK;
+
+                animator.play("attack");
+            }
+            if(attack.attacking && anim.oneShot){
+
+                if(anim.frameIndex == anim.frames.length - 1){
+
+                    attack.attacking = false;
+
+                    StateComponent state =
+                            componentManager.getComponent(entity, StateComponent.class);
+
+                    state.state = StateComponent.State.IDLE;
+                }
             }
 
         }

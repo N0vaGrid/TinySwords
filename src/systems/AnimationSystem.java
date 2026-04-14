@@ -18,7 +18,8 @@ public class AnimationSystem extends SystemBase {
 
         query = new Query(
                 AnimatorComponent.class,
-                SpriteComponent.class
+                SpriteComponent.class,
+                StateComponent.class
         );
     }
 
@@ -35,57 +36,58 @@ public class AnimationSystem extends SystemBase {
             SpriteComponent sprite =
                     componentManager.getComponent(entity, SpriteComponent.class);
 
+            StateComponent state =
+                    componentManager.getComponent(entity, StateComponent.class);
+
+            // 根据状态播放动画
+            switch (state.state){
+
+                case ATTACK:
+                    animator.play("attack");
+                    break;
+
+                case RUN:
+                    animator.play("run");
+                    break;
+
+                case IDLE:
+                    animator.play("idle");
+                    break;
+            }
+
             AnimationComponent anim = animator.getCurrentAnimation();
 
-            AttackComponent attack =
-                    componentManager.getComponent(entity, AttackComponent.class);
+            if(state.state == StateComponent.State.ATTACK){
 
-            VelocityComponent velocity =
-                    componentManager.getComponent(entity, VelocityComponent.class);
-            if(attack != null && attack.attacking){
-                // 攻击时保持 attack 动画
-            }
-            else{
+                if(anim != null && !anim.loop){
 
-                if(velocity.vx != 0 || velocity.vy != 0)
-                    animator.play("run");
-                else
-                    animator.play("idle");
+                    if(anim.frameIndex >= anim.frames.length - 1){
+                        state.state = StateComponent.State.IDLE;
+                    }
+
+                }
             }
 
-            if (anim == null)
+            if(anim == null)
                 continue;
 
             anim.timer++;
 
-            if (anim.timer >= anim.frameDuration) {
+            if(anim.timer >= anim.frameDuration){
 
                 anim.timer = 0;
 
                 anim.frameIndex++;
 
-                if (anim.frameIndex >= anim.frames.length) {
+                if(anim.frameIndex >= anim.frames.length){
 
-                    if (anim.loop) {
+                    if(anim.loop){
 
                         anim.frameIndex = 0;
 
-                    } else {
+                    }else{
 
                         anim.frameIndex = anim.frames.length - 1;
-
-                        // 如果是一次性动画
-                        if(anim.oneShot && attack != null){
-
-                            attack.attacking = false;
-
-                            if(velocity.vx != 0 || velocity.vy != 0)
-                                animator.play("run");
-                            else
-                                animator.play("idle");
-
-                            anim = animator.getCurrentAnimation();
-                        }
                     }
                 }
             }

@@ -52,6 +52,9 @@ public class MovementSystem extends SystemBase {
             SpriteComponent sprite =
                     componentManager.getComponent(entity, SpriteComponent.class);
 
+            StateComponent state =
+                    componentManager.getComponent(entity, StateComponent.class);
+
             velocity.vx = 0;
             velocity.vy = 0;
 
@@ -62,6 +65,22 @@ public class MovementSystem extends SystemBase {
 
             transform.x += velocity.vx;
             transform.y += velocity.vy;
+
+
+            // 根据速度判断状态
+            if(state != null){
+                if(velocity.vx != 0 || velocity.vy != 0){
+
+                    if(state.state != StateComponent.State.ATTACK)
+                        state.state = StateComponent.State.RUN;
+
+                }else{
+
+                    if(state.state != StateComponent.State.ATTACK)
+                        state.state = StateComponent.State.IDLE;
+                }
+            }
+
 
         }
     }
